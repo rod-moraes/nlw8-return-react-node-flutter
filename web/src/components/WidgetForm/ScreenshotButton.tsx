@@ -13,8 +13,8 @@ export function ScreenshotButton({ onScreenshotTook, screenshot }: ScreenshotBut
 
   async function handleTakeScreenshot() {
     setIstakingScreenshot(true);
-    const canvas = await html2canvas(document.querySelector('html')!)
-    const base64image = canvas.toDataURL('image/png');
+    const canvas = await html2canvas(document.querySelector("html")!)
+    const base64image = canvas.toDataURL("image/png");
     await new Promise((r) => setTimeout(r, 500));
     onScreenshotTook(base64image);
     setIstakingScreenshot(false);
@@ -28,7 +28,7 @@ export function ScreenshotButton({ onScreenshotTook, screenshot }: ScreenshotBut
         onClick={() => onScreenshotTook(null)}
         style={{
           backgroundImage: `url(${screenshot})`,
-          backgroundPosition: 'right bottom',
+          backgroundPosition: "right bottom",
           backgroundSize: 100
         }}
       >
