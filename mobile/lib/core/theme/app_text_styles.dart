@@ -13,6 +13,7 @@ abstract class AppTextStyles {
   TextStyle get textSecondaryRegular;
   TextStyle get textSecondarySmall;
   TextStyle get buttonOnBrandColor;
+  TextStyle get buttonTextPrimary;
   TextStyle get textTooltip;
 
   /*---------------TEXTSTYLE SETTINGS---------------*/
@@ -89,7 +90,13 @@ class AppTextStylesDefault implements AppTextStyles {
         fontWeight: FontWeight.w500,
         color: AppTheme.colors.textOnBrandColor,
       );
-
+  @override
+  TextStyle get buttonTextPrimary => GoogleFonts.inter(
+        fontSize: 14,
+        height: 24 / 14,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.textPrimary,
+      );
   @override
   TextStyle get textTooltip => GoogleFonts.inter(
         fontSize: 12,

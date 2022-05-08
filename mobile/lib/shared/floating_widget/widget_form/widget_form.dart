@@ -30,11 +30,11 @@ class _WidgetFormState extends State<WidgetForm> {
         WidgetFormController(screenshotController: widget.screenshotController);
     _widgetFormController.onUpdate = () {
       if (mounted) {
-        setState(() {
-          FocusScope.of(context).unfocus();
-        });
+        setState(() {});
       }
     };
+    _widgetFormController.onDisableKeypad =
+        () => FocusScope.of(context).unfocus();
     super.initState();
   }
 
@@ -65,28 +65,36 @@ class _WidgetFormState extends State<WidgetForm> {
           ),
           Expanded(
             child: AnimatedCrossFadeWidget(
-              firstChild: FeedbackTypeStep(
-                onSelectType: (type) =>
-                    _widgetFormController.onSelectType(type),
+              firstChild: AnimatedCrossFadeWidget(
+                firstChild: FeedbackTypeStep(
+                  onSelectType: (type) =>
+                      _widgetFormController.onSelectType(type),
+                ),
+                secondChild: FeedbackContentStep(
+                  typeModel: _widgetFormController.selectedTypeModel,
+                  handleRestartFeedback:
+                      _widgetFormController.handleRestartFeedback,
+                  feedbackText: _widgetFormController.feedbackText,
+                  handleFeedbackText: _widgetFormController.handleFeedbackText,
+                  isLoadingScreenshot:
+                      _widgetFormController.isLoadingScreenshot,
+                  onRemoveShot: _widgetFormController.onRemoveShot,
+                  onTakeShot: _widgetFormController.onTakeShot,
+                  screenshot: _widgetFormController.screenshot,
+                  onSaved: _widgetFormController.onSavedSubmitFeedback,
+                  disable: _widgetFormController.disableForm,
+                ),
+                isFirst: _widgetFormController.selectedTypeModel == null,
               ),
-              secondChild: FeedbackContentStep(
-                typeModel: _widgetFormController.selectedTypeModel,
+              secondChild: FeedbackSuccessStep(
                 handleRestartFeedback:
                     _widgetFormController.handleRestartFeedback,
-                feedbackText: _widgetFormController.feedbackText,
-                handleFeedbackText: _widgetFormController.handleFeedbackText,
-                isLoadingScreenshot: _widgetFormController.isLoadingScreenshot,
-                onRemoveShot: _widgetFormController.onRemoveShot,
-                onTakeShot: _widgetFormController.onTakeShot,
-                screenshot: _widgetFormController.screenshot,
-                onSaved: _widgetFormController.onSavedSubmitFeedback,
-                disable: _widgetFormController.disableForm,
               ),
-              isFirst: _widgetFormController.selectedTypeModel == null,
+              isFirst: !_widgetFormController.sendFeedback,
             ),
           ),
           const CopyrightWidget(),
-          SizedBox(height: 16),
+          const SizedBox(height: 20),
         ],
       ),
     );

@@ -58,7 +58,7 @@ export function WidgetForm() {
             />)}
         </>}
       <footer>
-        Feito com ♥ por <a href="" className="underline-offset-2 underline">Rodrigo</a>
+        Feito com ♥ por <a href="" className="underline-offset-2 underline">@rod-moraes</a>
       </footer>
     </div>
   );

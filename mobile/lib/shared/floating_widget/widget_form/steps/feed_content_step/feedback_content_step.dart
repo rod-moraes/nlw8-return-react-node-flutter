@@ -69,7 +69,7 @@ class _FeedbackContentStepState extends State<FeedbackContentStep> {
                                 hintText: widget.typeModel!.placeholder,
                                 expands: true,
                                 focusedBorderColor: AppTheme.colors.brand,
-                                onSaved: (String? feedback) {
+                                onChanged: (String? feedback) {
                                   if (feedback != null) {
                                     widget.handleFeedbackText(feedback);
                                   }
@@ -93,36 +93,52 @@ class _FeedbackContentStepState extends State<FeedbackContentStep> {
                           ),
                           const SizedBox(width: 8),
                           Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                _formKey.currentState!.save();
-                                widget.onSaved();
-                              },
-                              borderRadius: BorderRadius.circular(4),
-                              child: Ink(
-                                height: 40,
+                            child: AnimatedOpacity(
+                              opacity: (widget.feedbackText.isEmpty &&
+                                      widget.screenshot.isEmpty)
+                                  ? 0.5
+                                  : 1,
+                              duration: Duration(milliseconds: 400),
+                              child: DecoratedBox(
                                 decoration: BoxDecoration(
                                   color: AppTheme.colors.brand,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
-                                child: widget.disable
-                                    ? Center(
-                                        child: SizedBox(
-                                          width: 12,
-                                          height: 12,
-                                          child: CircularProgressIndicator(
-                                            color: AppTheme
-                                                .colors.textOnBrandColor,
-                                            strokeWidth: 2,
-                                          ),
-                                        ),
-                                      )
-                                    : Center(
-                                        child: Text(
-                                        "Enviar feedback",
-                                        style: AppTheme
-                                            .textStyles.buttonOnBrandColor,
-                                      )),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: (widget.feedbackText.isEmpty &&
+                                            widget.screenshot.isEmpty)
+                                        ? null
+                                        : () {
+                                            _formKey.currentState!.save();
+                                            widget.onSaved();
+                                          },
+                                    borderRadius: BorderRadius.circular(4),
+                                    child: Ink(
+                                      height: 40,
+                                      child: widget.disable
+                                          ? Center(
+                                              child: SizedBox(
+                                                width: 12,
+                                                height: 12,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: AppTheme
+                                                      .colors.textOnBrandColor,
+                                                  strokeWidth: 2,
+                                                ),
+                                              ),
+                                            )
+                                          : Center(
+                                              child: Text(
+                                              "Enviar feedback",
+                                              style: AppTheme.textStyles
+                                                  .buttonOnBrandColor,
+                                            )),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           )

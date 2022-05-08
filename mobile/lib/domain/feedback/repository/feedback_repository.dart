@@ -1,24 +1,22 @@
-import '../datasource/login_api.dart';
-import '../model/login_model.dart';
-import '../model/user_model.dart';
+import '../datasource/feedback_api.dart';
 
-abstract class ILoginRepository {
-  Future<UserModel> login(LoginModel loginModel);
+abstract class IFeedbackRepository {
+  Future<void> sendFeedback(String comment, String screenshot, String type);
   void dispose();
 }
 
-class LoginRepository implements ILoginRepository {
-  final ILoginApi _datasource;
+class FeedbackRepository implements IFeedbackRepository {
+  final IFeedbackApi _datasource;
 
-  LoginRepository({ILoginApi? datasource})
-      : _datasource = datasource ?? LoginApi();
+  FeedbackRepository({IFeedbackApi? datasource})
+      : _datasource = datasource ?? FeedbackApi();
 
   @override
-  Future<UserModel> login(LoginModel loginModel) async {
+  Future<void> sendFeedback(
+      String comment, String screenshot, String type) async {
     try {
-      String response = await _datasource.login(loginModel);
-      UserModel userModel = UserModel.fromJson(response);
-      return userModel;
+      String response =
+          await _datasource.sendFeedback(comment, screenshot, type);
     } catch (e) {
       throw handleErrorReturn(e);
     }

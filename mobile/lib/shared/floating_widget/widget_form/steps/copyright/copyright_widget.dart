@@ -9,7 +9,7 @@ class CopyrightWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 16),
-      child: Text("Feito com ♥ pela Rocketseat",
+      child: Text("Feito com ♥ por @rod-moraes",
           style: AppTheme.textStyles.textSecondarySmall),
     );
   }

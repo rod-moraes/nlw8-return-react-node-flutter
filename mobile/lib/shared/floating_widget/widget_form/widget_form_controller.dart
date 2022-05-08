@@ -2,13 +2,17 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:screenshot/screenshot.dart';
+import 'package:widget_nlw8/domain/feedback/usecase/feedback_usecase.dart';
 
 import 'model/type_model.dart';
 
 class WidgetFormController {
+  FeedbackUseCase feedbackUseCase = FeedbackUseCase();
   ScreenshotController screenshotController;
   void Function()? onUpdate;
+  void Function()? onDisableKeypad;
   bool disposeBool = false;
+  bool sendFeedback = false;
   String feedbackText = '';
 
   bool disableForm = false;
@@ -31,12 +35,13 @@ class WidgetFormController {
     selectedTypeModel = null;
     feedbackText = '';
     screenshot = '';
+    sendFeedback = false;
     update();
   }
 
   void handleFeedbackText(String text) {
     feedbackText = text;
-    update();
+    update(disableKeypad: false);
   }
 
   void onRemoveShot() {
@@ -63,8 +68,17 @@ class WidgetFormController {
   void onSavedSubmitFeedback() async {
     disableForm = true;
     update();
-    await Future.delayed(Duration(seconds: 10));
+    await Future.delayed(Duration(seconds: 2));
     if (!disposeBool) {
+      try {
+        await feedbackUseCase.sendFeedback(
+            feedbackText, screenshot, selectedTypeModel!.type);
+
+        sendFeedback = true;
+      } catch (e) {
+        print(e);
+      }
+
       disableForm = false;
       update();
       print(screenshot);
@@ -78,8 +92,9 @@ class WidgetFormController {
     return header + base64String;
   }
 
-  void update() {
+  void update({bool disableKeypad = true}) {
     if (onUpdate != null) onUpdate!();
+    if (disableKeypad && onDisableKeypad != null) onDisableKeypad!();
   }
 
   void dispose() {

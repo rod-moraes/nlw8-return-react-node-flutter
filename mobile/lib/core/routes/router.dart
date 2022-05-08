@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:widget_nlw8/modules/home/home_page.dart';
-import '../../domain/login/model/user_model.dart';
 import '/core/config/app_config_page.dart';
 import '/modules/splash/splash_page.dart';
 

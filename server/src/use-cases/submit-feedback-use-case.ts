@@ -1,27 +1,27 @@
 import { MailAdapter } from "../adapters/mail-adapter";
 import { FeedbacksRepository } from "../repositories/feedbacks-repository";
 
-interface SubmitFeedbackUseCaseRequest{
+interface SubmitFeedbackUseCaseRequest {
   type: string;
   comment: string;
   screenshot?: string;
 }
-export class SubmitFeedbackUseCase{
+export class SubmitFeedbackUseCase {
   constructor(
     private feedbacksRepository: FeedbacksRepository,
     private mailAdapter: MailAdapter
-  ){}
-  async execute(request: SubmitFeedbackUseCaseRequest){
-    const {type, comment, screenshot} = request;
-    
-    if(screenshot && !screenshot.startsWith("data:image/png;base64")){
+  ) { }
+  async execute(request: SubmitFeedbackUseCaseRequest) {
+    const { type, comment, screenshot } = request;
+
+    if (screenshot && !screenshot.startsWith("data:image/png;base64")) {
       throw new Error("invalid screenshot format.")
     }
-    if(!type){
+    if (!type) {
       throw new Error("Type is required.");
     }
 
-    if(!comment){
+    if (!comment) {
       throw new Error("Comment is required.");
     }
 
@@ -38,6 +38,7 @@ export class SubmitFeedbackUseCase{
         `<div style="font-family: sans-serif; font-size:16px; color:#111;">`,
         `<p>Tipo do feedback: ${type}</p>`,
         `<p>Comentário: ${comment}</p>`,
+        `<img height="400" src="${screenshot}">`,
         `</div>`
       ].join("\n")
     })
